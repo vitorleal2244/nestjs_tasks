@@ -2,14 +2,15 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Delete, UseGuards } from '@nestjs/common/decorators';
 import { Patch, Query } from '@nestjs/common/decorators/http';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config/dist/config.service';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
@@ -17,7 +18,8 @@ export class TasksController {
     private logger = new Logger('TasksController');
 
     constructor(
-        private tasksService: TasksService
+        private tasksService: TasksService,
+        private configService: ConfigService
     ) { }
 
     @Get()
